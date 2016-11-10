@@ -1,5 +1,9 @@
 package ch.hepia.it.opt.tp2.core;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Created by Thomas on 09.11.16.
  */
@@ -29,12 +33,16 @@ public class Sudoku {
 
     public SudokuState PSCBacktracking(SudokuState A) {
         if(A.isComplete()) return A;
+        System.out.println(A);
         SudokuState r;
         SudokuTile X = A.getMostConstraintVar();
-        for (int i : X.getPossibleValues()) {
-            X.setValue(i);
+
+        List<Integer> D = new ArrayList<>();
+        D.addAll(X.getPossibleValues());
+        for (int i : D) {
+            A.setMostConstraitVarValue(i);
             if(A.isValid()) {
-                r = PSCBacktracking(A);
+                r = PSCBacktracking(new SudokuState(A));
                 if(r != null) return r;
             }
         }

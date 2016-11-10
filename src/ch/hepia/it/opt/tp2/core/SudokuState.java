@@ -9,6 +9,7 @@ public class SudokuState {
 
     private SudokuTile[][] tiles;
     private boolean valid = false;
+    private int mcx, mcy;
 
     public SudokuState(int[][] tiles) {
         this.tiles = new SudokuTile[9][9];
@@ -17,6 +18,17 @@ public class SudokuState {
             for (int j = 0; j < 9; j++) {
                 this.tiles[i][j] = new SudokuTile();
                 this.tiles[i][j].setValue(tiles[i][j]);
+            }
+        }
+        update();
+    }
+
+    public SudokuState(SudokuState sudokuState) {
+        this.tiles = new SudokuTile[9][9];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                this.tiles[i][j] = new SudokuTile();
+                this.tiles[i][j].setValue(sudokuState.tiles[i][j].getValue());
             }
         }
         update();
@@ -76,7 +88,7 @@ public class SudokuState {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 int t = tiles[x1+i][y1+j].getValue();
-                if(t != 0 && x1 != y && y1 != y) {
+                if(t != 0 && x1+i != x && y1+j != y) {
                     values.add(t);
                 }
             }
@@ -87,7 +99,7 @@ public class SudokuState {
     private List<Integer> getLineRowNumbers(int k, int l) {
         List<Integer> values = new ArrayList<>(9);
         for (int i = 0; i < 9; i++) {
-            if(tiles[k][i].getValue() != 0 && i != l) {
+            if(tiles[k][i].getValue() != 0 && !values.contains(tiles[k][i].getValue()) && i != l) {
                 values.add(tiles[k][i].getValue());
             }
 
@@ -102,12 +114,18 @@ public class SudokuState {
         SudokuTile most = null;
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if(most == null || tiles[i][j].getPossibleValues().size() < most.getPossibleValues().size()) {
+                if(most == null || (tiles[i][j].getPossibleValues().size() < most.getPossibleValues().size() && tiles[i][j].getValue() == 0)) {
                     most = tiles[i][j];
+                    mcx = i;
+                    mcy = j;
                 }
             }
         }
         return most;
+    }
+
+    public void setMostConstraitVarValue(int v) {
+        tiles[mcx][mcy].setValue(v);
     }
 
     @Override
