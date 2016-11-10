@@ -114,7 +114,7 @@ public class SudokuState {
         SudokuTile most = null;
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if(most == null || (tiles[i][j].getPossibleValues().size() < most.getPossibleValues().size() && tiles[i][j].getValue() == 0)) {
+                if(most == null || (tiles[i][j].getPossibleValues().size() <= most.getPossibleValues().size() && tiles[i][j].getValue() == 0)) {
                     most = tiles[i][j];
                     mcx = i;
                     mcy = j;

@@ -26,14 +26,14 @@ public class Sudoku {
 
         SudokuState initalState = new SudokuState(init);
         System.out.println(initalState);
-        System.out.println();
+
         SudokuState s = new Sudoku().PSCBacktracking(initalState);
         System.out.println(s);
     }
 
     public SudokuState PSCBacktracking(SudokuState A) {
         if(A.isComplete()) return A;
-        System.out.println(A);
+        //System.out.println(A);
         SudokuState r;
         SudokuTile X = A.getMostConstraintVar();
 
